@@ -36,7 +36,7 @@
 // bbtype[5]
 // wfreq[6]
 //************************************* */
-
+//default criteria 
 
 //drop down menu
    function drop_menu(){
@@ -81,16 +81,14 @@ function updateValues() {
     current_id = samples_metadata.filter(data=>data.id == selectedOption);
     current_sample = samples_samples.filter(data=>data.id == selectedOption);
     console.log(current_sample);
-    clearMetadataTable()
-    buildTable()
-    buildBar()
-    buildBubbles()
-  }
+    clearMetadataTable();
+    buildTable();
+    buildBar();
+    buildBubbles();
+    }
 
 
 //we have selected the items now we have to render them.
-//the below should grab the values, but how does it do this for the correct id?
-
 
   function buildTable(id, ethnicity, gender, age, location, bbtype, wfreq) {
     var div = d3.select("#sample-metadata");
@@ -119,7 +117,7 @@ d3.select("#sample-metadata").selectAll("*").remove();
 //need to set to max top 10
 
 //??sort the data array using hte sample values?? ****see 3/7
-// current_sample.sort(function(a, b) {
+//current_sample.sort(function(a, b) {
 //   return parseFloat(b.current_sample.sample_values) - parseFloat(a.current_sample.sample_values);
 // });
 // // slice the first 10 objects for plotting
@@ -129,19 +127,19 @@ d3.select("#sample-metadata").selectAll("*").remove();
 
 // create barchart
    function buildBar() {
+     const sliceData = current_sample[0].sample_values.slice(0, 10);
+     const sliceLabel = current_sample[0].otu_ids.slice(0, 10);
+     console.log(sliceData);
+     console.log(sliceLabel);
     var chartData = {
-      y: current_sample[0].otu_ids,
-      x: current_sample[0].sample_values,
+      x: current_sample[0].sample_values.slice(0, 10).reverse(),
+      y: current_sample[0].otu_ids.slice(0, 10).reverse().map(item=> `OTU-${item}`),
       type: 'bar',
       orientation: 'h',
-      size: current_sample[0].sample_values,
-      text: current_sample[0].otu_labels,
+      size: current_sample[0].sample_values.slice(0, 10),
+      text: current_sample[0].otu_labels.slice(0, 10),
     }
-    // var layout = {
-    //   title: "test",
-    //   xaxis: { title: "Sample" },
-    //   yaxis: { title: "OTU ID" }
-    // };
+    
     var data = [chartData];
     //removed layout from below     
     Plotly.newPlot('bar', data);
@@ -154,6 +152,23 @@ d3.select("#sample-metadata").selectAll("*").remove();
 // otu_ids for the marker colors
 // otu_labels for the text values
 // var id = current_sample[0].otu_ids
+
+// Create a bubble chart that displays each sample.
+// Use otu_ids for the x values.
+
+// Use sample_values for the y values.
+
+// Use sample_values for the marker size.
+
+// Use otu_ids for the marker colors.
+
+// Use otu_labels for the text values.
+
+// Bubble Chart
+
+// Display the sample metadata, i.e., an individual's demographic information.
+
+// Display each key-value pair from the metadata JSON object somewhere on the page.
 function buildBubbles() {
   var bubbleData = {
     x: current_sample[0].otu_ids,
@@ -162,66 +177,20 @@ function buildBubbles() {
     // color: "id",
     mode: 'markers',
     marker: {
-        size: [40, 60, 80, 100]
+        size: current_sample[0].sample_values,
+        color: current_sample[0].otu_ids.map(item=> `#${item}`)
    }}
 var data = [bubbleData];
 var layout = {
         // title: 'Marker Size',
         showlegend: false,
         height: 600,
-        width: 600
+        width: 600,
+        xaxis: {title: "OTU ID"},
       };
   Plotly.newPlot('bubble', data, layout);
+
  
 }
-// buildPlot
 
-// attr("cx", d => xLinearScale(d.hair_length))
-//     .attr("cy", d => yLinearScale(d.num_hits))
-//     .attr("r", "15")
-//     .attr("fill", "pink")
-//     .attr("opacity", ".5");
-
-
-//     var trace1 = {
-//       x: [1, 2, 3, 4],
-//       y: [10, 11, 12, 13],
-//       mode: 'markers',
-//       marker: {
-//         size: [40, 60, 80, 100]
-//       }
-//     };
-    
-//     
-
-
-        
-        
-        
-//         console.log(samples);
-//         samples.forEach((sample)=>{
-//             meta_id.append("option")
-//             .text(sample)
-//             .property("value", sample);
-//         });
-//         var firstsample=samples[0];
-
-//       })
-// }
-// drop_menu();
-// 
-// }
-
-
-
-
-// //Charts
-// function buildCharts(sample) {
-//     var colors  = 
-//     d3.json("samples.json").then((data)=>{
-
-//     })
-// }
-
-// 
 
